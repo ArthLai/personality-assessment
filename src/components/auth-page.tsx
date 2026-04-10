@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase";
-import { Mail, Lock, Loader2, Brain, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Loader2, Brain, Eye, EyeOff, Sparkles, BarChart3, Target, Zap } from "lucide-react";
 
 type Mode = "login" | "signup";
 
@@ -75,6 +75,41 @@ export function AuthPage() {
               ? "登入後繼續你的測評"
               : "註冊後開始你的深度人格分析"}
           </p>
+        </div>
+
+        {/* What you'll get */}
+        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm mb-4 space-y-3">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">測完你會得到</p>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex gap-2">
+              <BarChart3 className="h-4 w-4 text-indigo-500 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-xs font-medium text-gray-800">人格數據圖表</p>
+                <p className="text-[11px] text-gray-400">10 個框架、40+ 項指標</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Zap className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-xs font-medium text-gray-800">深度模式發現</p>
+                <p className="text-[11px] text-gray-400">找出你行為裡的隱藏規律</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Sparkles className="h-4 w-4 text-purple-500 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-xs font-medium text-gray-800">AI 專屬解讀</p>
+                <p className="text-[11px] text-gray-400">不是罐頭報告,是針對你寫的</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Target className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-xs font-medium text-gray-800">行動建議</p>
+                <p className="text-[11px] text-gray-400">明天就能開始做的具體步驟</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Form */}
