@@ -1,0 +1,467 @@
+{
+  "meta": {
+    "name": "個人化人格與驅動測評",
+    "version": "1.0.0",
+    "author": "Arth × Claude",
+    "totalQuestions": 110,
+    "estimatedMinutes": "45-60",
+    "language": "zh-Hant",
+    "description": "整合 7 個心理學框架的人格、驅動、行為脈絡測評,含自動化解讀引擎"
+  },
+
+  "frameworks": [
+    {
+      "id": "BIG_FIVE",
+      "name": "Big Five / Five Factor Model",
+      "source": "Costa & McCrae (1992). NEO-PI-R Professional Manual.",
+      "description": "學界共識最強的人格特質模型,五個維度描述人格的底層結構",
+      "constructs": ["BF_O", "BF_C", "BF_E", "BF_A", "BF_N"]
+    },
+    {
+      "id": "HEXACO",
+      "name": "HEXACO Personality Inventory",
+      "source": "Ashton & Lee (2007). Empirical, Theoretical, and Practical Advantages of the HEXACO Model.",
+      "description": "Big Five 的延伸,新增誠實-謙遜維度,對人際動機有更強的解釋力",
+      "constructs": ["HX_H"]
+    },
+    {
+      "id": "SDT",
+      "name": "Self-Determination Theory",
+      "source": "Deci & Ryan (2000). The 'What' and 'Why' of Goal Pursuits.",
+      "description": "三大基本心理需求:自主性、勝任感、連結。需求滿足程度決定內在動機強度",
+      "constructs": ["SDT_AUT", "SDT_COM", "SDT_REL"]
+    },
+    {
+      "id": "REISS",
+      "name": "Reiss Motivation Profile (精選版)",
+      "source": "Reiss (2004). Multifaceted Nature of Intrinsic Motivation.",
+      "description": "16 種基本慾望的精選 8 項,形成個人的動機指紋",
+      "constructs": ["RM_POW", "RM_CUR", "RM_IND", "RM_ORD", "RM_REC", "RM_HON", "RM_IDE", "RM_STA"]
+    },
+    {
+      "id": "RF",
+      "name": "Regulatory Focus Theory",
+      "source": "Higgins (1997). Beyond Pleasure and Pain.",
+      "description": "人做事的底層方向:促進焦點(追求正面結果)vs 預防焦點(避免負面結果)",
+      "constructs": ["RF_PRO", "RF_PRE"]
+    },
+    {
+      "id": "MINDSET_NFC",
+      "name": "Dweck Mindset + Need for Cognition",
+      "source": "Dweck (2006). Mindset; Cacioppo et al. (1984). Need for Cognition Scale.",
+      "description": "思維模式(固定 vs 成長)與對深度思考的內在渴望",
+      "constructs": ["MS_GRO", "MS_FIX", "NFC"]
+    },
+    {
+      "id": "COG_STYLE",
+      "name": "Cognitive Style Dimensions",
+      "source": "Kirton (1976). Adaption-Innovation; Epstein (1996). CEST.",
+      "description": "認知處理的偏好:由上而下 vs 由下而上、分析 vs 直覺、收斂 vs 發散",
+      "constructs": ["COG_TOP", "COG_BOT", "COG_ANA", "COG_INT", "COG_DIV", "COG_INT_S"]
+    },
+    {
+      "id": "CAPS",
+      "name": "Mischel CAPS (Cognitive-Affective Processing System)",
+      "source": "Mischel & Shoda (1995). A Cognitive-Affective System Theory of Personality.",
+      "description": "情境化的 if-then 行為模式:同一個人在不同情境下展現不同行為的一致模式",
+      "constructs": ["CAPS_SOC_HI", "CAPS_THREAT", "CAPS_BORE", "CAPS_ALONE", "CAPS_DEADLINE", "CAPS_HELP", "CAPS_CONFLICT", "CAPS_RULE", "CAPS_SHARE", "CAPS_PUSHBACK", "CAPS_LEISURE", "CAPS_NOVEL"]
+    },
+    {
+      "id": "COPING",
+      "name": "Coping Styles + Emotional Awareness",
+      "source": "Lazarus & Folkman (1984). Stress, Appraisal, and Coping.",
+      "description": "壓力下的應對策略:問題導向、情緒導向、迴避導向",
+      "constructs": ["COP_PRO", "COP_EMO", "COP_AVO", "COP_EMO_NEG", "COP_SELF", "COP_SOLO", "EMO_AWARE"]
+    },
+    {
+      "id": "SELF_ID",
+      "name": "Self-Concept & Identity",
+      "source": "Multiple: Clance & Imes (1978) Impostor Phenomenon; Crocker & Wolfe (2001) Contingencies of Self-Worth.",
+      "description": "自我認知結構:後設認知、冒牌者感、價值基礎、身份整合",
+      "constructs": ["META_AWARE", "IMPOSTER", "OTHER_REF", "SELF_DOING", "SELF_BEING", "REFLECT", "ID_CONFLICT"]
+    }
+  ],
+
+  "constructs": {
+    "BF_O":         { "label_zh": "經驗開放性", "label_en": "Openness to Experience", "framework": "BIG_FIVE", "pole_high": "好奇、想像力豐富、接受新事物", "pole_low": "務實、傳統、偏好常規" },
+    "BF_C":         { "label_zh": "盡責性", "label_en": "Conscientiousness", "framework": "BIG_FIVE", "pole_high": "有組織、自律、目標導向", "pole_low": "靈活、隨性、衝動" },
+    "BF_E":         { "label_zh": "外向性", "label_en": "Extraversion", "framework": "BIG_FIVE", "pole_high": "外向、精力充沛、健談", "pole_low": "內向、安靜、獨立" },
+    "BF_A":         { "label_zh": "親和性", "label_en": "Agreeableness", "framework": "BIG_FIVE", "pole_high": "合作、信任、體貼", "pole_low": "競爭、懷疑、直言" },
+    "BF_N":         { "label_zh": "神經質", "label_en": "Neuroticism", "framework": "BIG_FIVE", "pole_high": "情緒波動、焦慮、敏感", "pole_low": "情緒穩定、冷靜、抗壓" },
+    "HX_H":         { "label_zh": "誠實-謙遜", "label_en": "Honesty-Humility", "framework": "HEXACO", "pole_high": "誠實、不貪、不操縱", "pole_low": "自利、虛榮、功利" },
+    "SDT_AUT":      { "label_zh": "自主性需求", "label_en": "Autonomy", "framework": "SDT", "pole_high": "需要掌控、自主決策", "pole_low": "接受指導、不介意被管理" },
+    "SDT_COM":      { "label_zh": "勝任感需求", "label_en": "Competence", "framework": "SDT", "pole_high": "追求精進、挑戰邊緣", "pole_low": "舒適區內運作" },
+    "SDT_REL":      { "label_zh": "連結需求", "label_en": "Relatedness", "framework": "SDT", "pole_high": "需要深度連結、被理解", "pole_low": "獨立運作、低依賴" },
+    "RM_POW":       { "label_zh": "權力動機", "label_en": "Power", "framework": "REISS", "pole_high": "喜歡影響他人方向", "pole_low": "不在乎影響力" },
+    "RM_CUR":       { "label_zh": "好奇動機", "label_en": "Curiosity", "framework": "REISS", "pole_high": "持續探索新領域", "pole_low": "專注已知領域" },
+    "RM_IND":       { "label_zh": "獨立動機", "label_en": "Independence", "framework": "REISS", "pole_high": "做自己比被接受重要", "pole_low": "融入群體更重要" },
+    "RM_ORD":       { "label_zh": "秩序動機", "label_en": "Order", "framework": "REISS", "pole_high": "環境整齊、流程清晰", "pole_low": "不介意混亂" },
+    "RM_REC":       { "label_zh": "認可動機", "label_en": "Recognition", "framework": "REISS", "pole_high": "希望作品被看見", "pole_low": "不在乎外在認可" },
+    "RM_HON":       { "label_zh": "榮譽/原則", "label_en": "Honor", "framework": "REISS", "pole_high": "原則 > 機會", "pole_low": "務實彈性" },
+    "RM_IDE":       { "label_zh": "理想主義", "label_en": "Idealism", "framework": "REISS", "pole_high": "追求社會意義", "pole_low": "務實自利" },
+    "RM_STA":       { "label_zh": "地位動機", "label_en": "Status", "framework": "REISS", "pole_high": "重視頭銜地位", "pole_low": "不在乎地位象徵" },
+    "RF_PRO":       { "label_zh": "促進焦點", "label_en": "Promotion Focus", "framework": "RF", "pole_high": "追求成長、機會、理想自我", "pole_low": "不被正面願景驅動" },
+    "RF_PRE":       { "label_zh": "預防焦點", "label_en": "Prevention Focus", "framework": "RF", "pole_high": "避免損失、風險評估、義務自我", "pole_low": "不被損失擔憂驅動" },
+    "NFC":          { "label_zh": "認知需求", "label_en": "Need for Cognition", "framework": "MINDSET_NFC", "pole_high": "享受深度思考", "pole_low": "偏好直接行動" },
+    "MS_GRO":       { "label_zh": "成長型思維", "label_en": "Growth Mindset", "framework": "MINDSET_NFC", "pole_high": "能力可改變、失敗是學習", "pole_low": "能力固定" },
+    "MS_FIX":       { "label_zh": "固定型思維", "label_en": "Fixed Mindset", "framework": "MINDSET_NFC", "pole_high": "天賦天生、避免暴露弱點", "pole_low": "相信後天可塑" },
+    "COG_TOP":      { "label_zh": "由上而下(框架優先)", "label_en": "Top-Down", "framework": "COG_STYLE", "pole_high": "先建模型再填細節", "pole_low": "不先建框架" },
+    "COG_BOT":      { "label_zh": "由下而上(細節優先)", "label_en": "Bottom-Up", "framework": "COG_STYLE", "pole_high": "從細節歸納規律", "pole_low": "不從細節出發" },
+    "COG_ANA":      { "label_zh": "分析型", "label_en": "Analytical", "framework": "COG_STYLE", "pole_high": "數據與邏輯驅動", "pole_low": "不依賴分析" },
+    "COG_INT":      { "label_zh": "直覺型", "label_en": "Intuitive", "framework": "COG_STYLE", "pole_high": "直覺與整體感受驅動", "pole_low": "不依賴直覺" },
+    "COG_DIV":      { "label_zh": "發散型", "label_en": "Divergent", "framework": "COG_STYLE", "pole_high": "同時多條思路", "pole_low": "單一路徑專注" },
+    "COG_INT_S":    { "label_zh": "跨域整合", "label_en": "Cross-Domain Integration", "framework": "COG_STYLE", "pole_high": "連結不同領域概念", "pole_low": "領域內思考" },
+    "CAPS_SOC_HI":  { "label_zh": "高地位社交場合表達", "label_en": "Expression in High-Status Settings", "framework": "CAPS", "pole_high": "主動發言", "pole_low": "沉默觀察" },
+    "CAPS_THREAT":  { "label_zh": "被質疑時穩定度", "label_en": "Stability Under Challenge", "framework": "CAPS", "pole_high": "冷靜回應", "pole_low": "情緒反應" },
+    "CAPS_BORE":    { "label_zh": "無聊任務紀律", "label_en": "Discipline on Boring Tasks", "framework": "CAPS", "pole_high": "咬牙完成", "pole_low": "容易放棄" },
+    "CAPS_ALONE":   { "label_zh": "獨自工作一致性", "label_en": "Solo Work Consistency", "framework": "CAPS", "pole_high": "品質不變", "pole_low": "品質下降" },
+    "CAPS_DEADLINE":{ "label_zh": "截止日爆發力", "label_en": "Deadline Burst", "framework": "CAPS", "pole_high": "壓力下爆發", "pole_low": "壓力下癱瘓" },
+    "CAPS_HELP":    { "label_zh": "承接求助傾向", "label_en": "Help Acceptance", "framework": "CAPS", "pole_high": "傾向答應", "pole_low": "傾向拒絕" },
+    "CAPS_CONFLICT":{ "label_zh": "衝突中妥協", "label_en": "Conflict Compromise", "framework": "CAPS", "pole_high": "先妥協避免衝突", "pole_low": "堅持立場" },
+    "CAPS_RULE":    { "label_zh": "流程順從", "label_en": "Rule Compliance", "framework": "CAPS", "pole_high": "嚴格遵守", "pole_low": "直接繞過" },
+    "CAPS_SHARE":   { "label_zh": "主動分享作品", "label_en": "Proactive Sharing", "framework": "CAPS", "pole_high": "主動分享求認可", "pole_low": "低調不分享" },
+    "CAPS_PUSHBACK":{ "label_zh": "對不公回饋的當下反駁", "label_en": "Immediate Pushback", "framework": "CAPS", "pole_high": "當下直接反駁", "pole_low": "事後才反應" },
+    "CAPS_LEISURE": { "label_zh": "空閒填滿衝動", "label_en": "Idle Time Fill", "framework": "CAPS", "pole_high": "立刻找事填滿", "pole_low": "能純粹放鬆" },
+    "CAPS_NOVEL":   { "label_zh": "擁抱失控/新奇", "label_en": "Embrace Novelty/Chaos", "framework": "CAPS", "pole_high": "享受失控變成故事", "pole_low": "抗拒意外" },
+    "COP_PRO":      { "label_zh": "問題導向應對", "label_en": "Problem-Focused Coping", "framework": "COPING", "pole_high": "列行動清單、邏輯思考", "pole_low": "不面對問題" },
+    "COP_EMO":      { "label_zh": "情緒導向應對", "label_en": "Emotion-Focused Coping", "framework": "COPING", "pole_high": "先處理情緒", "pole_low": "忽略情緒" },
+    "COP_AVO":      { "label_zh": "迴避導向應對", "label_en": "Avoidance Coping", "framework": "COPING", "pole_high": "暫時逃避", "pole_low": "不會逃避" },
+    "COP_EMO_NEG":  { "label_zh": "情緒淹沒傾向", "label_en": "Emotional Flooding", "framework": "COPING", "pole_high": "情緒高漲時決策會後悔", "pole_low": "情緒不影響決策" },
+    "COP_SELF":     { "label_zh": "自我復原儀式", "label_en": "Self-Restoration Rituals", "framework": "COPING", "pole_high": "有固定復原方式", "pole_low": "無固定復原方式" },
+    "COP_SOLO":     { "label_zh": "獨自處理低潮", "label_en": "Solo Low Processing", "framework": "COPING", "pole_high": "獨自處理", "pole_low": "向人求助" },
+    "EMO_AWARE":    { "label_zh": "情緒覺察", "label_en": "Emotional Awareness", "framework": "COPING", "pole_high": "能即時辨識情緒", "pole_low": "事後才意識到" },
+    "META_AWARE":   { "label_zh": "後設認知", "label_en": "Meta-Cognitive Awareness", "framework": "SELF_ID", "pole_high": "清楚知道自己的能力範圍", "pole_low": "不確定自己能做什麼" },
+    "IMPOSTER":     { "label_zh": "冒牌者感", "label_en": "Impostor Syndrome", "framework": "SELF_ID", "pole_high": "覺得配不上", "pole_low": "自我肯定" },
+    "OTHER_REF":    { "label_zh": "他人定義依賴", "label_en": "Other-Referential Self", "framework": "SELF_ID", "pole_high": "在意別人怎麼定義自己", "pole_low": "自我定義" },
+    "SELF_DOING":   { "label_zh": "價值連結成就", "label_en": "Doing-Based Self-Worth", "framework": "SELF_ID", "pole_high": "自我價值綁定產出", "pole_low": "價值不依賴成就" },
+    "SELF_BEING":   { "label_zh": "價值獨立成就", "label_en": "Being-Based Self-Worth", "framework": "SELF_ID", "pole_high": "無成就也有價值感", "pole_low": "需要成就才有價值感" },
+    "REFLECT":      { "label_zh": "自我反思", "label_en": "Self-Reflection", "framework": "SELF_ID", "pole_high": "主動反思身份方向", "pole_low": "不花時間反思" },
+    "ID_CONFLICT":  { "label_zh": "身份衝突感", "label_en": "Identity Conflict", "framework": "SELF_ID", "pole_high": "多重身份互相矛盾", "pole_low": "身份整合良好" }
+  },
+
+  "sections": [
+    {
+      "id": "s1",
+      "title": "Section 1 — 人格底層特質",
+      "instruction": "下列題目沒有對錯,憑直覺選擇最貼近你日常狀態的程度。",
+      "frameworks": ["BIG_FIVE", "HEXACO"],
+      "questions": [
+        { "id": "q1",  "text": "我喜歡探索抽象概念與理論,即使它們沒有立即的實用價值。", "type": "likert", "construct": "BF_O", "reverse": false },
+        { "id": "q2",  "text": "我經常被新穎的想法、藝術或觀點吸引。", "type": "likert", "construct": "BF_O", "reverse": false },
+        { "id": "q3",  "text": "我寧可遵循已被驗證的方法,也不願嘗試未經測試的新方式。", "type": "likert", "construct": "BF_O", "reverse": true },
+        { "id": "q4",  "text": "我對人類動機、心理運作或哲學議題感到好奇。", "type": "likert", "construct": "BF_O", "reverse": false },
+        { "id": "q5",  "text": "我會主動規劃事情,而不是讓它們自然發生。", "type": "likert", "construct": "BF_C", "reverse": false },
+        { "id": "q6",  "text": "我經常拖延重要但不緊急的任務。", "type": "likert", "construct": "BF_C", "reverse": true },
+        { "id": "q7",  "text": "我會為了長期目標放棄短期享樂。", "type": "likert", "construct": "BF_C", "reverse": false },
+        { "id": "q8",  "text": "我做事傾向追求完成,而非追求完美。", "type": "likert", "construct": "BF_C", "reverse": true },
+        { "id": "q9",  "text": "我在社交場合中能感到能量被補充而非耗盡。", "type": "likert", "construct": "BF_E", "reverse": false },
+        { "id": "q10", "text": "我享受成為一群人注意的焦點。", "type": "likert", "construct": "BF_E", "reverse": false },
+        { "id": "q11", "text": "獨處時我感到自在且能恢復精力。", "type": "likert", "construct": "BF_E", "reverse": true },
+        { "id": "q12", "text": "我傾向主動發起對話,而非等別人開口。", "type": "likert", "construct": "BF_E", "reverse": false },
+        { "id": "q13", "text": "我會優先考慮他人的感受,即使犧牲自己的立場。", "type": "likert", "construct": "BF_A", "reverse": false },
+        { "id": "q14", "text": "我覺得多數人基本上是值得信任的。", "type": "likert", "construct": "BF_A", "reverse": false },
+        { "id": "q15", "text": "在意見分歧時,我會直接表達不同看法,即使氣氛變僵。", "type": "likert", "construct": "BF_A", "reverse": true },
+        { "id": "q16", "text": "我容易為小事感到焦慮或不安。", "type": "likert", "construct": "BF_N", "reverse": false },
+        { "id": "q17", "text": "壓力大時我能維持情緒穩定。", "type": "likert", "construct": "BF_N", "reverse": true },
+        { "id": "q18", "text": "我經常在事後反覆思考某些對話或決定。", "type": "likert", "construct": "BF_N", "reverse": false },
+        { "id": "q19", "text": "我覺得自己情緒起伏比身邊大多數人都大。", "type": "likert", "construct": "BF_N", "reverse": false },
+        { "id": "q20", "text": "即使沒人會發現,我也不會佔別人便宜。", "type": "likert", "construct": "HX_H", "reverse": false },
+        { "id": "q21", "text": "為了得到想要的東西,我願意稍微誇大或美化事實。", "type": "likert", "construct": "HX_H", "reverse": true },
+        { "id": "q22", "text": "我覺得擁有名牌、頭銜或地位象徵很重要。", "type": "likert", "construct": "HX_H", "reverse": true },
+        { "id": "q23", "text": "想想最近一次你「對自己很滿意」的時刻。是什麼事?讓你滿意的具體原因是什麼?(2-4 句)", "type": "open", "construct": null, "tags": ["satisfaction_source", "self_concept"] }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Section 2 — 內在動機與基本需求",
+      "instruction": "這部分探索什麼樣的條件會讓你感到「活著」、什麼會讓你枯竭。",
+      "frameworks": ["SDT", "REISS"],
+      "questions": [
+        { "id": "q24", "text": "我需要對自己的工作有掌控感,否則很難投入。", "type": "likert", "construct": "SDT_AUT", "reverse": false },
+        { "id": "q25", "text": "被告知「該怎麼做」會讓我立刻失去動力。", "type": "likert", "construct": "SDT_AUT", "reverse": false },
+        { "id": "q26", "text": "我寧可自己摸索犯錯,也不願完全按照別人的方法做。", "type": "likert", "construct": "SDT_AUT", "reverse": false },
+        { "id": "q27", "text": "看到自己進步、變得更熟練,是我最重要的滿足來源之一。", "type": "likert", "construct": "SDT_COM", "reverse": false },
+        { "id": "q28", "text": "做太簡單的事會讓我感到無聊甚至焦慮。", "type": "likert", "construct": "SDT_COM", "reverse": false },
+        { "id": "q29", "text": "我會主動挑戰自己能力邊緣的任務,即使有失敗風險。", "type": "likert", "construct": "SDT_COM", "reverse": false },
+        { "id": "q30", "text": "與少數幾個深度連結的人互動,比廣泛社交更滋養我。", "type": "likert", "construct": "SDT_REL", "reverse": false },
+        { "id": "q31", "text": "如果沒有人看見、沒有人理解我的努力,我會感到空虛。", "type": "likert", "construct": "SDT_REL", "reverse": false },
+        { "id": "q32", "text": "歸屬感對我來說沒那麼重要,我可以獨自運作很久。", "type": "likert", "construct": "SDT_REL", "reverse": true },
+        { "id": "q33", "text": "我喜歡能影響別人決定或方向的位置。", "type": "likert", "construct": "RM_POW", "reverse": false },
+        { "id": "q34", "text": "我會持續探索新領域,即使沒有外在獎勵。", "type": "likert", "construct": "RM_CUR", "reverse": false },
+        { "id": "q35", "text": "「做自己」對我來說比「被接受」更重要。", "type": "likert", "construct": "RM_IND", "reverse": false },
+        { "id": "q36", "text": "環境整齊、流程清晰會大幅提升我的效率與心情。", "type": "likert", "construct": "RM_ORD", "reverse": false },
+        { "id": "q37", "text": "我希望我做的事能被外界看見、被認可。", "type": "likert", "construct": "RM_REC", "reverse": false },
+        { "id": "q38", "text": "違背原則或承諾比錯失機會更讓我難受。", "type": "likert", "construct": "RM_HON", "reverse": false },
+        { "id": "q39", "text": "我希望自己的工作對社會、對他人有更大的意義。", "type": "likert", "construct": "RM_IDE", "reverse": false },
+        { "id": "q40", "text": "在群體中被視為「有地位、有實力」是我重視的事。", "type": "likert", "construct": "RM_STA", "reverse": false },
+        { "id": "q41", "text": "如果只能選一個,以下哪個最讓你動力滿滿?", "type": "choice", "construct": "MOTIV_PRIORITY", "options": [
+          { "val": "A", "text": "做出別人做不到的事(勝任感)", "maps_to": "SDT_COM" },
+          { "val": "B", "text": "完全按自己想法做事(自主)", "maps_to": "SDT_AUT" },
+          { "val": "C", "text": "與重要的人深度連結、被理解(連結)", "maps_to": "SDT_REL" },
+          { "val": "D", "text": "創造能影響很多人的東西(影響力)", "maps_to": "RM_POW" }
+        ]},
+        { "id": "q42", "text": "如果只能選一個,以下哪個最會讓你感到痛苦或枯竭?", "type": "choice", "construct": "ANTI_MOTIV", "options": [
+          { "val": "A", "text": "被微管理、沒有決策權", "maps_to": "SDT_AUT" },
+          { "val": "B", "text": "做的事情沒人看見、沒有意義感", "maps_to": "RM_IDE" },
+          { "val": "C", "text": "持續做低於自己能力的事", "maps_to": "SDT_COM" },
+          { "val": "D", "text": "孤立無援、沒有可信任的人", "maps_to": "SDT_REL" }
+        ]},
+        { "id": "q43", "text": "回想一段你「進入心流、忘記時間」的經驗。當時你在做什麼?環境條件是什麼?(2-4 句)", "type": "open", "construct": null, "tags": ["flow_trigger", "optimal_conditions"] }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "Section 3 — 趨近 vs 規避",
+      "instruction": "我們做事的底層邏輯,有人是「為了得到好的」,有人是「為了避免壞的」。這部分釐清你的方向。",
+      "frameworks": ["RF"],
+      "questions": [
+        { "id": "q44", "text": "我做決定時主要想的是「我可以得到什麼」。", "type": "likert", "construct": "RF_PRO", "reverse": false },
+        { "id": "q45", "text": "我做決定時主要想的是「我可能會失去什麼」。", "type": "likert", "construct": "RF_PRE", "reverse": false },
+        { "id": "q46", "text": "我傾向追求理想中的自己(我想成為什麼)。", "type": "likert", "construct": "RF_PRO", "reverse": false },
+        { "id": "q47", "text": "我傾向滿足應該的自己(我必須做什麼)。", "type": "likert", "construct": "RF_PRE", "reverse": false },
+        { "id": "q48", "text": "我享受高風險高回報的選擇,即使可能失敗。", "type": "likert", "construct": "RF_PRO", "reverse": false },
+        { "id": "q49", "text": "我會花時間做風險評估、防範未然。", "type": "likert", "construct": "RF_PRE", "reverse": false },
+        { "id": "q50", "text": "錯過機會比犯錯更讓我難受。", "type": "likert", "construct": "RF_PRO", "reverse": false },
+        { "id": "q51", "text": "犯錯比錯過機會更讓我難受。", "type": "likert", "construct": "RF_PRE", "reverse": false },
+        { "id": "q52", "text": "在一個重要的工作專案前,你的第一反應比較像?", "type": "choice", "construct": "RF_DOMINANT", "options": [
+          { "val": "A", "text": "想像成功後的樣子,這幅畫面驅動我前進", "maps_to": "RF_PRO" },
+          { "val": "B", "text": "想像失敗的後果,這份警覺驅動我前進", "maps_to": "RF_PRE" },
+          { "val": "C", "text": "兩者都有,但成功的願景更主導", "maps_to": "RF_PRO" },
+          { "val": "D", "text": "兩者都有,但失敗的擔憂更主導", "maps_to": "RF_PRE" }
+        ]},
+        { "id": "q53", "text": "下列哪個情境會讓你更不舒服?", "type": "choice", "construct": "RF_FORCED", "options": [
+          { "val": "A", "text": "錯過了一個本來會大幅成長的機會", "maps_to": "RF_PRO" },
+          { "val": "B", "text": "做了一個導致明顯損失的決定", "maps_to": "RF_PRE" }
+        ]},
+        { "id": "q54", "text": "想想你最近一次重大決定(轉職、合作、購買、表達等)。當時驅動你最後拍板的,是「想得到什麼」還是「想避免什麼」?具體描述。(2-4 句)", "type": "open", "construct": null, "tags": ["regulatory_focus_narrative", "decision_driver"] }
+      ]
+    },
+    {
+      "id": "s4",
+      "title": "Section 4 — 思維模式與認知風格",
+      "instruction": "你如何思考、學習、處理新資訊。",
+      "frameworks": ["MINDSET_NFC", "COG_STYLE"],
+      "questions": [
+        { "id": "q55", "text": "我享受需要長時間深度思考的問題。", "type": "likert", "construct": "NFC", "reverse": false },
+        { "id": "q56", "text": "我寧可解一道困難的題目,也不願做一堆簡單的事。", "type": "likert", "construct": "NFC", "reverse": false },
+        { "id": "q57", "text": "我會主動尋找需要動腦的活動,而非放空娛樂。", "type": "likert", "construct": "NFC", "reverse": false },
+        { "id": "q58", "text": "思考太多會讓我頭痛,我更喜歡直接行動。", "type": "likert", "construct": "NFC", "reverse": true },
+        { "id": "q59", "text": "人的能力基本上是可以透過努力大幅改變的。", "type": "likert", "construct": "MS_GRO", "reverse": false },
+        { "id": "q60", "text": "有些天賦是天生的,後天再怎麼努力也補不上。", "type": "likert", "construct": "MS_FIX", "reverse": false },
+        { "id": "q61", "text": "失敗是學習過程的必然部分,而非能力不足的證明。", "type": "likert", "construct": "MS_GRO", "reverse": false },
+        { "id": "q62", "text": "我會避開可能凸顯我「不擅長」的場合。", "type": "likert", "construct": "MS_FIX", "reverse": false },
+        { "id": "q63", "text": "我傾向先建立框架/模型,再填入細節。", "type": "likert", "construct": "COG_TOP", "reverse": false },
+        { "id": "q64", "text": "我傾向從具體細節出發,逐步歸納出規律。", "type": "likert", "construct": "COG_BOT", "reverse": false },
+        { "id": "q65", "text": "我做決定時更相信數據與邏輯。", "type": "likert", "construct": "COG_ANA", "reverse": false },
+        { "id": "q66", "text": "我做決定時更相信直覺與整體感受。", "type": "likert", "construct": "COG_INT", "reverse": false },
+        { "id": "q67", "text": "我經常同時跑多條思路,不喜歡被綁在單一路徑上。", "type": "likert", "construct": "COG_DIV", "reverse": false },
+        { "id": "q68", "text": "我會把不同領域的概念串連起來,看出別人沒看到的關聯。", "type": "likert", "construct": "COG_INT_S", "reverse": false },
+        { "id": "q69", "text": "面對一個全新、複雜的問題,你的第一步通常是?", "type": "choice", "construct": "PROBLEM_APPROACH", "options": [
+          { "val": "A", "text": "先大量蒐集資料、了解全貌", "maps_to": "COG_BOT" },
+          { "val": "B", "text": "先動手做做看,從錯誤中學", "maps_to": null },
+          { "val": "C", "text": "找有經驗的人問,複製別人的路徑", "maps_to": null },
+          { "val": "D", "text": "先把問題拆解、建立自己的框架", "maps_to": "COG_TOP" }
+        ]},
+        { "id": "q70", "text": "你最近一次「腦中突然把兩件不相關的事連起來、產生新洞察」是什麼?(2-4 句)", "type": "open", "construct": null, "tags": ["cross_domain", "insight_generation"] }
+      ]
+    },
+    {
+      "id": "s5",
+      "title": "Section 5 — 情境化行為 (if-then)",
+      "instruction": "同樣的人,在不同情境下會展現不同的樣貌。這部分捕捉你的情境特異性。",
+      "frameworks": ["CAPS"],
+      "questions": [
+        { "id": "q71", "text": "我會主動發言、提出觀點。", "type": "likert", "construct": "CAPS_SOC_HI", "reverse": false, "scenario": "在一個你不熟悉、且大多數人比你資深的會議裡——" },
+        { "id": "q72", "text": "我會冷靜地解釋我的依據,不會被情緒帶走。", "type": "likert", "construct": "CAPS_THREAT", "reverse": false, "scenario": "當有人公開質疑你的專業判斷——" },
+        { "id": "q73", "text": "我能咬牙撐過去,按時交付。", "type": "likert", "construct": "CAPS_BORE", "reverse": false, "scenario": "當任務很無聊但必須完成——" },
+        { "id": "q74", "text": "我的產出品質與有人盯著時差不多。", "type": "likert", "construct": "CAPS_ALONE", "reverse": false, "scenario": "當你獨自工作、沒人在看的時候——" },
+        { "id": "q75", "text": "我反而能爆發出最高效率,進入專注狀態。", "type": "likert", "construct": "CAPS_DEADLINE", "reverse": false, "scenario": "當截止日逼近、時間明顯不夠——" },
+        { "id": "q76", "text": "我傾向答應,即使打亂自己的節奏。", "type": "likert", "construct": "CAPS_HELP", "reverse": false, "scenario": "當有人向你求助、但會佔用你大量時間——" },
+        { "id": "q77", "text": "我會選擇先妥協、避免破壞氣氛。", "type": "likert", "construct": "CAPS_CONFLICT", "reverse": false, "scenario": "在意見有衝突的會議中——" },
+        { "id": "q78", "text": "我會嚴格遵守流程,即使覺得它沒效率。", "type": "likert", "construct": "CAPS_RULE", "reverse": false, "scenario": "面對一項規則很多、流程繁瑣的工作——" },
+        { "id": "q79", "text": "我會主動分享給人看、希望被看見。", "type": "likert", "construct": "CAPS_SHARE", "reverse": false, "scenario": "當你完成一件你很自豪的作品——" },
+        { "id": "q80", "text": "我會在當下直接反駁。", "type": "likert", "construct": "CAPS_PUSHBACK", "reverse": false, "scenario": "當有人給你不公平的負面回饋——" },
+        { "id": "q81", "text": "我會立刻找事情填滿,很難純粹放鬆。", "type": "likert", "construct": "CAPS_LEISURE", "reverse": false, "scenario": "當有一筆突如其來的閒暇時間(例如行程取消)——" },
+        { "id": "q82", "text": "我能享受這種失控感,把它變成故事。", "type": "likert", "construct": "CAPS_NOVEL", "reverse": false, "scenario": "在陌生城市旅行、行程出意外時——" },
+        { "id": "q83", "text": "請想出一個你「在不同情境下表現極為不同」的例子。例如,你在 A 場合是 X 樣子,在 B 場合卻是 Y 樣子。為什麼?(3-5 句)", "type": "open", "construct": null, "tags": ["situational_variance", "self_awareness"] }
+      ]
+    },
+    {
+      "id": "s6",
+      "title": "Section 6 — 壓力下的應對",
+      "instruction": "壓力會把人推到本能模式。這部分看你的本能是什麼。",
+      "frameworks": ["COPING"],
+      "questions": [
+        { "id": "q84", "text": "壓力大時,我會直接面對問題、列出行動清單。", "type": "likert", "construct": "COP_PRO", "reverse": false },
+        { "id": "q85", "text": "壓力大時,我會先處理情緒(運動、傾訴、寫東西)再面對問題。", "type": "likert", "construct": "COP_EMO", "reverse": false },
+        { "id": "q86", "text": "壓力大時,我會暫時逃避(滑手機、追劇、睡覺)。", "type": "likert", "construct": "COP_AVO", "reverse": false },
+        { "id": "q87", "text": "我能在壓力下保持邏輯思考。", "type": "likert", "construct": "COP_PRO", "reverse": false },
+        { "id": "q88", "text": "情緒高漲時,我做出的決定我事後通常會後悔。", "type": "likert", "construct": "COP_EMO_NEG", "reverse": false },
+        { "id": "q89", "text": "我有一些固定的「自我復原」儀式(運動、音樂、寫作等)。", "type": "likert", "construct": "COP_SELF", "reverse": false },
+        { "id": "q90", "text": "我傾向獨自處理低潮,而非向人求助。", "type": "likert", "construct": "COP_SOLO", "reverse": false },
+        { "id": "q91", "text": "我能清楚辨識自己當下的情緒是什麼。", "type": "likert", "construct": "EMO_AWARE", "reverse": false },
+        { "id": "q92", "text": "我經常事後才意識到自己其實當下很生氣/難過/緊張。", "type": "likert", "construct": "EMO_AWARE", "reverse": true },
+        { "id": "q93", "text": "在持續一週以上的高壓期之後,你通常會?", "type": "choice", "construct": "RECOVERY_PATTERN", "options": [
+          { "val": "A", "text": "整個人關機 1-3 天,什麼都不想做", "maps_to": "COP_AVO" },
+          { "val": "B", "text": "立刻啟動下一個專案,用慣性帶過", "maps_to": "CAPS_LEISURE" },
+          { "val": "C", "text": "情緒低潮、自我懷疑,但仍勉強運作", "maps_to": "COP_EMO_NEG" },
+          { "val": "D", "text": "正常恢復,沒有特別的反彈", "maps_to": null }
+        ]},
+        { "id": "q94", "text": "描述你最近一次「明顯感到撐不住、想關機」的狀態。觸發點是什麼?你怎麼處理的?(3-5 句)", "type": "open", "construct": null, "tags": ["burnout_trigger", "recovery_strategy"] }
+      ]
+    },
+    {
+      "id": "s7",
+      "title": "Section 7 — 自我認知與身份脈絡",
+      "instruction": "這部分問你「對自己的看法」與「身份焦慮」。",
+      "frameworks": ["SELF_ID"],
+      "questions": [
+        { "id": "q95",  "text": "我對自己的能力範圍有清楚的認識。", "type": "likert", "construct": "META_AWARE", "reverse": false },
+        { "id": "q96",  "text": "我經常覺得「我配不上現在擁有的」(冒牌者感)。", "type": "likert", "construct": "IMPOSTER", "reverse": false },
+        { "id": "q97",  "text": "我會在意「別人如何定義我這個人」。", "type": "likert", "construct": "OTHER_REF", "reverse": false },
+        { "id": "q98",  "text": "我的自我價值高度連結於「我做出了什麼」。", "type": "likert", "construct": "SELF_DOING", "reverse": false },
+        { "id": "q99",  "text": "即使沒有任何成就,我也能覺得自己有價值。", "type": "likert", "construct": "SELF_BEING", "reverse": false },
+        { "id": "q100", "text": "我會主動花時間反思「我是誰、我要往哪去」。", "type": "likert", "construct": "REFLECT", "reverse": false },
+        { "id": "q101", "text": "我的多個身份(職業、興趣、關係)之間有時會打架。", "type": "likert", "construct": "ID_CONFLICT", "reverse": false },
+        { "id": "q102", "text": "下面四個敘述,哪一個最接近你「對自己的核心定位」?", "type": "choice", "construct": "IDENTITY_CORE", "options": [
+          { "val": "A", "text": "我是個建造者(把想法變成具體東西的人)", "maps_to": null },
+          { "val": "B", "text": "我是個翻譯者(連接不同領域、讓事情通順的人)", "maps_to": "COG_INT_S" },
+          { "val": "C", "text": "我是個探索者(追求新領域、新可能的人)", "maps_to": "BF_O" },
+          { "val": "D", "text": "我是個照顧者(讓人或系統運作得更好的人)", "maps_to": "BF_A" }
+        ]},
+        { "id": "q103", "text": "如果你必須放棄下列其中之一,最痛的是?", "type": "choice", "construct": "VALUE_FORCED", "options": [
+          { "val": "A", "text": "自由(不用被人管,自己決定怎麼做)", "maps_to": "SDT_AUT" },
+          { "val": "B", "text": "成長(持續變強、突破自己)", "maps_to": "SDT_COM" },
+          { "val": "C", "text": "影響(我做的事被人看見、有意義)", "maps_to": "RM_IDE" },
+          { "val": "D", "text": "穩定(可預期的生活與安全感)", "maps_to": "RF_PRE" }
+        ]},
+        { "id": "q104", "text": "如果有人 5 年後寫一段話描述你,你最希望那段話的「關鍵字」是什麼?為什麼是這些字?(3-5 句)", "type": "open", "construct": null, "tags": ["ideal_self", "aspiration"] }
+      ]
+    },
+    {
+      "id": "s8",
+      "title": "Section 8 — 脈絡整合與盲點",
+      "instruction": "最後這部分是純開放式問題,捕捉量表抓不到的脈絡。請花一點時間寫,這是解讀的關鍵原料。",
+      "frameworks": [],
+      "questions": [
+        { "id": "q105", "text": "回顧你過去 3-5 年,有沒有一個「你重複犯的錯」或「重複出現的模式」?描述它。(3-5 句)", "type": "open", "construct": null, "tags": ["recurring_pattern", "blind_spot"] },
+        { "id": "q106", "text": "別人對你最常見的「誤解」是什麼?他們以為你 X,但你其實是 Y。(2-4 句)", "type": "open", "construct": null, "tags": ["public_private_gap", "persona"] },
+        { "id": "q107", "text": "什麼樣的人/事/環境會立刻讓你「眼睛發亮、想投入」?具體描述一個例子。(3-5 句)", "type": "open", "construct": null, "tags": ["activation_trigger", "optimal_environment"] },
+        { "id": "q108", "text": "什麼樣的人/事/環境會立刻讓你「身體變沉、想離開」?具體描述一個例子。(3-5 句)", "type": "open", "construct": null, "tags": ["deactivation_trigger", "toxic_environment"] },
+        { "id": "q109", "text": "如果你今天 50 歲、回看現在的自己,你最擔心自己「沒做、後來後悔的事」是什麼?(3-5 句)", "type": "open", "construct": null, "tags": ["regret_aversion", "life_direction"] },
+        { "id": "q110", "text": "有沒有什麼是這份測評沒問到、但你覺得「如果想真正理解我,一定要知道」的事?(自由發揮)", "type": "open", "construct": null, "tags": ["supplementary", "self_disclosure"] }
+      ]
+    }
+  ],
+
+  "scoring": {
+    "likert_scale": {
+      "min": 1,
+      "max": 5,
+      "labels": ["非常不同意", "不同意", "中立", "同意", "非常同意"],
+      "reverse_formula": "6 - raw_value"
+    },
+    "construct_scoring": {
+      "method": "mean",
+      "description": "每個構念的分數 = 所有對應題目(反向題已轉換)的平均值"
+    },
+    "interpretation_bands": {
+      "bands": [
+        { "range": [0, 20], "label": "極低", "label_en": "very_low" },
+        { "range": [21, 40], "label": "偏低", "label_en": "low" },
+        { "range": [41, 60], "label": "中等", "label_en": "moderate" },
+        { "range": [61, 80], "label": "偏高", "label_en": "high" },
+        { "range": [81, 100], "label": "極高", "label_en": "very_high" }
+      ]
+    }
+  },
+
+  "display_groups": [
+    { "name": "Big Five 人格", "constructs": ["BF_O", "BF_C", "BF_E", "BF_A", "BF_N", "HX_H"] },
+    { "name": "基本心理需求 (SDT)", "constructs": ["SDT_AUT", "SDT_COM", "SDT_REL"] },
+    { "name": "Reiss 動機側寫", "constructs": ["RM_POW", "RM_CUR", "RM_IND", "RM_ORD", "RM_REC", "RM_HON", "RM_IDE", "RM_STA"] },
+    { "name": "趨近 vs 規避", "constructs": ["RF_PRO", "RF_PRE"] },
+    { "name": "思維與認知", "constructs": ["NFC", "MS_GRO", "MS_FIX", "COG_TOP", "COG_BOT", "COG_ANA", "COG_INT", "COG_DIV", "COG_INT_S"] },
+    { "name": "壓力應對", "constructs": ["COP_PRO", "COP_EMO", "COP_AVO", "COP_EMO_NEG", "COP_SELF", "COP_SOLO", "EMO_AWARE"] },
+    { "name": "自我認知", "constructs": ["META_AWARE", "IMPOSTER", "OTHER_REF", "SELF_DOING", "SELF_BEING", "REFLECT", "ID_CONFLICT"] },
+    { "name": "情境化 if-then", "constructs": ["CAPS_SOC_HI", "CAPS_THREAT", "CAPS_BORE", "CAPS_ALONE", "CAPS_DEADLINE", "CAPS_HELP", "CAPS_CONFLICT", "CAPS_RULE", "CAPS_SHARE", "CAPS_PUSHBACK", "CAPS_LEISURE", "CAPS_NOVEL"] }
+  ],
+
+  "auto_interpretation": {
+    "cross_validation_rules": [
+      {
+        "id": "cv1",
+        "name": "自主需求一致性",
+        "check": "SDT_AUT likert vs q42=A vs q103=A",
+        "if_consistent": "自主是核心驅動,被微管理是首要枯竭因素",
+        "if_inconsistent": "自主需求可能是情境性的,非絕對優先"
+      },
+      {
+        "id": "cv2",
+        "name": "勝任需求一致性",
+        "check": "SDT_COM likert vs q41=A vs q42=C",
+        "if_consistent": "成長與精進是核心價值",
+        "if_inconsistent": "勝任感可能是手段而非目的"
+      },
+      {
+        "id": "cv3",
+        "name": "外向性行為矛盾檢測",
+        "check": "BF_E low vs CAPS_SOC_HI/CAPS_PUSHBACK high",
+        "if_inconsistent": "目標驅動的社交主動性:不享受社交但會為了目標主動出擊"
+      },
+      {
+        "id": "cv4",
+        "name": "盡責性-ADHD 模式",
+        "check": "BF_C moderate + CAPS_DEADLINE high + CAPS_LEISURE high",
+        "pattern": "外部錨點依賴型紀律:有死線時極度自律,沒有錨點時系統漂移"
+      },
+      {
+        "id": "cv5",
+        "name": "趨避焦點平衡",
+        "check": "RF_PRO vs RF_PRE difference",
+        "if_equal": "雙焦點模式",
+        "if_pro_dominant": "明確的促進焦點驅動",
+        "if_pre_dominant": "明確的預防焦點驅動"
+      },
+      {
+        "id": "cv6",
+        "name": "認可 vs 地位分離",
+        "check": "RM_REC high + RM_STA low + HX_H high",
+        "pattern": "在乎作品被看見,不在乎個人被崇拜"
+      },
+      {
+        "id": "cv7",
+        "name": "價值基礎脆弱度",
+        "check": "SELF_DOING high + SELF_BEING low + ID_CONFLICT high",
+        "pattern": "自我價值高度綁定產出,低產出期會動搖自我認同"
+      },
+      {
+        "id": "cv8",
+        "name": "壓力迴圈檢測",
+        "check": "COP_PRO high + COP_SOLO high + CAPS_LEISURE high + q93=B",
+        "pattern": "高產出 → 不休息 → 用新專案覆蓋疲勞 → 能量透支 → Burnout 迴圈"
+      },
+      {
+        "id": "cv9",
+        "name": "HSS+HSP 特質檢測",
+        "check": "BF_O very_high + BF_E low + SDT_COM very_high + CAPS_LEISURE high + CAPS_NOVEL high + COP_SOLO high + SDT_REL high",
+        "pattern": "高感覺尋求 + 高敏感:需要持續新刺激,但每份刺激的處理深度高於平均,導致能量消耗快"
+      }
+    ],
+    "narrative_sections": [
+      { "id": "n1", "title": "人格底層結構", "sources": ["BF_O", "BF_C", "BF_E", "BF_A", "BF_N", "HX_H"], "cross_refs": ["cv3", "cv4"] },
+      { "id": "n2", "title": "驅動結構", "sources": ["SDT_AUT", "SDT_COM", "SDT_REL", "RM_*", "q41", "q42"], "cross_refs": ["cv1", "cv2", "cv6"] },
+      { "id": "n3", "title": "趨避焦點", "sources": ["RF_PRO", "RF_PRE", "q52", "q53", "q54"], "cross_refs": ["cv5"] },
+      { "id": "n4", "title": "認知風格", "sources": ["NFC", "MS_GRO", "MS_FIX", "COG_*", "q69", "q70"], "cross_refs": [] },
+      { "id": "n5", "title": "情境 if-then 地圖", "sources": ["CAPS_*", "q83"], "cross_refs": ["cv3", "cv4"] },
+      { "id": "n6", "title": "壓力應對", "sources": ["COP_*", "EMO_AWARE", "q93", "q94"], "cross_refs": ["cv8"] },
+      { "id": "n7", "title": "自我認知與脆弱點", "sources": ["META_AWARE", "IMPOSTER", "OTHER_REF", "SELF_DOING", "SELF_BEING", "REFLECT", "ID_CONFLICT", "q104"], "cross_refs": ["cv7"] },
+      { "id": "n8", "title": "特質交互整合", "sources": ["q110"], "cross_refs": ["cv9"] },
+      { "id": "n9", "title": "一段話側寫", "sources": ["all"], "cross_refs": ["all"] }
+    ],
+    "llm_interpretation_prompt": {
+      "system_prompt": "你是一位整合多個心理學框架的人格分析師。你會收到一份測評的 JSON 結果(包含 likert 量表分數、強制選擇答案、開放式簡答),你的任務是產出一份完整的脈絡解讀報告。\n\n規則:\n1. 不要逐題翻譯分數,而是做交叉驗證:比對不同框架的分數是否一致,找出矛盾點並解釋\n2. 開放題的敘事是關鍵原料,用來補充量表分數無法捕捉的脈絡\n3. 語氣直接、不客套、不用「您」,用「你」\n4. 每個區塊開頭先給結論,再展開證據\n5. 報告最後用一段話(200-300 字)做整體側寫\n6. 如果數據中有明顯的張力或矛盾,主動標記為「值得探索的張力點」\n7. 報告使用繁體中文,心理學術語保留英文並附中文翻譯\n\n報告結構(共 9 個區塊):\n1. 人格底層結構\n2. 驅動結構\n3. 趨避焦點\n4. 認知風格\n5. 情境 if-then 地圖\n6. 壓力應對\n7. 自我認知與脆弱點\n8. 特質交互整合(如有 ADHD/HSS/HSP 等揭露)\n9. 一段話側寫",
+      "user_prompt_template": "以下是測評結果 JSON,請產出完整脈絡解讀報告:\n\n```json\n{assessment_result_json}\n```"
+    }
+  }
+}
