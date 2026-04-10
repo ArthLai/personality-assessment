@@ -92,9 +92,11 @@ function InterpLine({ line, idx }: { line: string; idx: number }) {
 
 export function ResultsPage({
   scores,
+  assessmentId,
   onRetake,
 }: {
   scores: AssessmentScores;
+  assessmentId?: string | null;
   onRetake: () => void;
 }) {
   const [interpretation, setInterpretation] = useState<string>("");
@@ -147,6 +149,18 @@ export function ResultsPage({
         return;
       }
       setInterpretation(data.interpretation);
+      // Save interpretation to DB
+      if (assessmentId) {
+        fetch("/api/assessments", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "save_interpretation",
+            assessment_id: assessmentId,
+            interpretation: data.interpretation,
+          }),
+        }).catch(() => {});
+      }
     } catch {
       setInterpretError("網路錯誤,請檢查連線後再試。");
     } finally {

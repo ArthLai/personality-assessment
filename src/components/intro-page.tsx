@@ -16,7 +16,7 @@ const FRAMEWORK_ICONS: Record<string, string> = {
   SELF_ID: "🪞",
 };
 
-export function IntroPage({ onStart }: { onStart: () => void }) {
+export function IntroPage({ onStart, resumeLabel }: { onStart: () => void; resumeLabel?: string }) {
   return (
     <div className="min-h-screen">
       {/* Hero */}
@@ -58,7 +58,7 @@ export function IntroPage({ onStart }: { onStart: () => void }) {
             onClick={onStart}
             className="inline-flex h-12 items-center justify-center rounded-xl bg-indigo-600 px-8 text-base font-medium text-white shadow-lg shadow-indigo-200 transition-all hover:bg-indigo-700 hover:shadow-xl hover:shadow-indigo-200 active:scale-[0.98]"
           >
-            開始測評
+            {resumeLabel || "開始測評"}
           </button>
         </div>
       </div>
